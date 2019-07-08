@@ -1,2 +1,2 @@
 # Machine-Learning
-Contains some project workr related to machine leraning
+Contains some project work related to machine leraning
