@@ -1,0 +1,2 @@
+The task is to preprocess the bank additonal full file and use a classification algorithm to predict salary
+Split the data into training and test set such that the score is maximised.
