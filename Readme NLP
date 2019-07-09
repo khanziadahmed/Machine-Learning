@@ -1,0 +1,3 @@
+The task is to process the tweets using NLP and use classification algortitm to predit whether label is positive or negative
+Preprocess the data first
+Try using different classification algorithms and check score to see which gives a better result
