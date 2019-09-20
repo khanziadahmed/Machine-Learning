@@ -1,0 +1,86 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv('datasets/stockindex.csv')
+
+X = dataset.iloc[:,2:4].values
+y = dataset.iloc[:,-1].values
+
+plt.scatter(dataset['Interest_Rate'],y)
+plt.xlabel('Interest Rate')
+plt.ylabel('Stock Price')
+plt.title('Stock Price Prediction')
+plt.grid(True)
+plt.show()
+
+plt.scatter(dataset['Unemploment_Rate'],y)
+plt.xlabel('Unemployment Rate')
+plt.ylabel('Stock Price')
+plt.title('Stock Price Prediction')
+plt.grid(True)
+plt.show()
+
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+lin.fit(X ,y)
+
+lin.score(X,y)
+
+print('Intercept: \n', lin.intercept_)
+print('Coefficients: \n', lin.coef_)
+
+print('Predicted Stock Price:', lin.predict([[2.75,5.3]]))
+
+import statsmodels.api as sm
+X = sm.add_constant(X) 
+model = sm.OLS(y, X).fit()
+predictions = model.predict(X) 
+print_model = model.summary()
+print(print_model)
+
+import tkinter as tk
+root = tk.Tk()
+root.title('Stock Price')
+
+canvas1 = tk.Canvas(root, width = 500, height = 300)
+canvas1.pack()
+
+photo = tk.PhotoImage(file = "C://Users//Ziad//Desktop//datasets//stock-chart-grayscale.png")
+canvas1.create_image(0,0, image = photo)
+
+Intercept_result = ('Intercept: ', lin.intercept_)
+label_Intercept = tk.Label(root, text=Intercept_result, justify = 'center')
+canvas1.create_window(260, 220, window=label_Intercept)
+                                        
+Coefficients_result  = ('Coefficients: ', lin.coef_)
+label_Coefficients = tk.Label(root, text=Coefficients_result, justify = 'center')
+canvas1.create_window(260, 240, window=label_Coefficients)
+
+label1 = tk.Label(root, text='Type Interest Rate: ')
+canvas1.create_window(100, 100, window=label1)
+
+entry1 = tk.Entry (root) 
+canvas1.create_window(270, 100, window=entry1)
+
+label2 = tk.Label(root, text=' Type Unemployment Rate: ')
+canvas1.create_window(120, 120, window=label2)
+
+entry2 = tk.Entry (root)
+canvas1.create_window(270, 120, window=entry2)
+
+def values(): 
+    global New_Interest_Rate 
+    New_Interest_Rate = float(entry1.get()) 
+    
+    global New_Unemployment_Rate 
+    New_Unemployment_Rate = float(entry2.get()) 
+    
+    Prediction_result  = ('Predicted Stock Index Price: ', lin.predict([[New_Interest_Rate ,New_Unemployment_Rate]]))
+    label_Prediction = tk.Label(root, text= Prediction_result, bg='orange')
+    canvas1.create_window(260, 280, window=label_Prediction)
+    
+button1 = tk.Button (root, text='Predict Stock Index Price',command=values, bg='orange') # button to call the 'values' command above 
+canvas1.create_window(270, 150, window=button1)
+ 
+root.mainloop()
